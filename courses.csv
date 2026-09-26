@@ -1,0 +1,20 @@
+Course ID,Course Name,Professor name,Time,Days,Difficulty rating,Main rating,Reference Number
+ENC 1101,Writing and Rhetoric I,Sarah Jenkins,9:00-10:15 AM,T TH,2.8/5,4.2/5,93810
+ENC 1101,Writing and Rhetoric I,Marcus Vance,1:00-2:15 PM,M W,3.1/5,3.8/5,24592
+MAC 2311,Calculus I,David Thorne,11:00 AM-12:15 PM,T TH,3.7/5,4.5/5,13278
+MAC 2311,Calculus I,Elena Rostova,2:30-3:45 PM,M W,3.9/5,3.6/5,46048
+BSC 2010,General Biology I,Rachel Adams,10:00-11:15 AM,M W F,3.4/5,4.1/5,42098
+BSC 2010,General Biology I,Gregory House,2:00-3:15 PM,T TH,4.1/5,3.7/5,39256
+CHM 1045,General Chemistry I,Valerie Scott,8:30-9:45 AM,M W,4.2/5,4.4/5,28289
+PHY 2048,Physics with Calculus I,Arthur Pendelton,11:00 AM-12:15 PM,M W F,4.5/5,3.9/5,23434
+PHI 2010,Introduction to Philosophy,Julian Sacks,1:00-2:15 PM,T TH,2.9/5,4.8/5,98696
+LIT 1000,Introduction to Literature,Clara Oswald,3:30-4:45 PM,M W,2.5/5,4.3/5,81482
+HUM 1020,Humanities,Victor Hugo,9:30-10:45 AM,T TH,2.2/5,3.5/5,21395
+CGS 1920,Introduction to Computer Science,Robert Chang,8:00-9:15 AM,M W,2.2/5,4.7/5,87397
+COP 2210,Computer Programming I,Tariq Al-Mansoor,10:00-11:15 AM,T TH,3.3/5,4.4/5,65302
+COP 2210,Computer Programming I,Linda Gomez,4:00-5:15 PM,M W,3.5/5,3.9/5,14165
+COP 3337,Computer Programming II,Kevin Patel,12:30-1:45 PM,T TH,3.8/5,4.1/5,13905
+COT 3100,Discrete Structures,Nadia Dubois,2:00-3:15 PM,M W F,4.2/5,4.3/5,22280
+COP 3530,Data Structures,Brian O'Connor,10:30-11:45 AM,M W,4.0/5,4.6/5,38657
+CEN 4010,Software Engineering,Samantha Wright,3:00-5:45 PM,W,3.4/5,4.0/5,40495
+COP 4610,Operating Systems,Frank Castle,5:00-7:45 PM,M,4.3/5,3.5/5,76237
