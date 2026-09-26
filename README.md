@@ -48,5 +48,7 @@ Open your browser and navigate to http://127.0.0.1:5000/.
 
 Future Roadmap
 Live Portal Integration: Bypassing manual entry by connecting directly to university SIS endpoints (e.g., Canvas, Banner).
+
 Live RMP Scraper: Automated API fetching from RateMyProfessor for real-time score updates.
+
 Calendar Sync: One-click exporter to Google Calendar, Apple Calendar, and Outlook.
