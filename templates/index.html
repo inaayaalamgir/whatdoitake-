@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>WhatDoITake.course</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+
+<!-- ============================================= -->
+<!-- NAVIGATION -->
+<!-- ============================================= -->
+
+<nav class="bg-indigo-600 text-white shadow-lg py-4 px-8">
+
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+
+        <div class="flex items-center gap-3">
+
+            <i
+                class="fa-solid fa-graduation-cap text-[#00D1C1] text-2xl"
+            ></i>
+
+            <span class="font-extrabold text-xl">
+                WhatDoITake
+                <span class="text-indigo-200">
+                    .course
+                </span>
+            </span>
+
+        </div>
+
+
+        <div
+            class="text-xs bg-indigo-700 py-1 px-3 rounded-full font-semibold"
+        >
+            ShellHacks 2026
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ============================================= -->
+<!-- MAIN -->
+<!-- ============================================= -->
+
+<main class="max-w-7xl mx-auto px-4 py-8">
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+
+        <!-- ===================================== -->
+        <!-- LEFT: PREFERENCES -->
+        <!-- ===================================== -->
+
+        <section
+            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 h-fit"
+        >
+
+            <h2
+                class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-sliders text-indigo-600"></i>
+
+                Student Preferences
+
+            </h2>
+
+
+            <!-- Student -->
+
+            <div class="mb-5">
+
+                <label
+                    class="block text-xs font-bold text-slate-600 uppercase mb-2"
+                >
+                    Demo Student
+                </label>
+
+                <select
+                    id="studentProfile"
+                    onchange="updateProfilePreview()"
+                    class="w-full p-3 bg-slate-50 border border-slate-300 rounded-lg text-sm"
+                >
+
+                    <option value="alex">
+                        Alex — Freshman
+                    </option>
+
+                    <option value="maya" selected>
+                        Maya — Sophomore
+                    </option>
+
+                    <option value="leo">
+                        Leo — Junior
+                    </option>
+
+                </select>
+
+
+                <div
+                    id="profileBadge"
+                    class="mt-2 text-xs text-slate-500 bg-slate-100 p-3 rounded-lg"
+                ></div>
+
+            </div>
+
+
+            <!-- Major -->
+
+            <div class="mb-5">
+
+                <label
+                    class="block text-xs font-bold text-slate-600 uppercase mb-2"
+                >
+                    Major
+                </label>
+
+                <select
+                    id="major"
+                    class="w-full p-3 bg-slate-50 border border-slate-300 rounded-lg text-sm"
+                >
+
+                    <option>
+                        Computer Science
+                    </option>
+
+                    <option>
+                        Information Technology
+                    </option>
+
+                    <option>
+                        Data Science
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Time -->
+
+            <div class="mb-5">
+
+                <label
+                    class="block text-xs font-bold text-slate-600 uppercase mb-2"
+                >
+                    Preferred Class Time
+                </label>
+
+                <select
+                    id="time"
+                    class="w-full p-3 bg-slate-50 border border-slate-300 rounded-lg text-sm"
+                >
+
+                    <option>
+                        Morning (9 AM - 12 PM)
+                    </option>
+
+                    <option>
+                        Afternoon (12 PM - 4 PM)
+                    </option>
+
+                    <option selected>
+                        Any
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Difficulty -->
+
+            <div class="mb-5">
+
+                <label
+                    class="block text-xs font-bold text-slate-600 uppercase mb-2"
+                >
+                    Preferred Workload
+                </label>
+
+                <select
+                    id="difficulty"
+                    class="w-full p-3 bg-slate-50 border border-slate-300 rounded-lg text-sm"
+                >
+
+                    <option>
+                        Light
+                    </option>
+
+                    <option selected>
+                        Balanced
+                    </option>
+
+                    <option>
+                        Challenging
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Interests -->
+
+            <div class="mb-6">
+
+                <label
+                    class="block text-xs font-bold text-slate-600 uppercase mb-2"
+                >
+                    Academic Interests
+                </label>
+
+                <textarea
+                    id="interests"
+                    rows="3"
+                    placeholder="Example: AI, healthcare, cybersecurity, software engineering..."
+                    class="w-full p-3 bg-slate-50 border border-slate-300 rounded-lg text-sm resize-none"
+                ></textarea>
+
+            </div>
+
+
+            <!-- Generate -->
+
+            <button
+                id="generateBtn"
+                onclick="generateSchedule()"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2"
+            >
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                Generate My Schedule
+
+            </button>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- RIGHT: RESULTS -->
+        <!-- ===================================== -->
+
+        <section class="lg:col-span-2">
+
+
+            <!-- Initial -->
+
+            <div
+                id="initialState"
+                class="bg-white p-12 rounded-2xl shadow-sm border border-slate-200 text-center"
+            >
+
+                <i
+                    class="fa-solid fa-calendar-days text-5xl text-indigo-200 mb-4"
+                ></i>
+
+                <h3
+                    class="text-xl font-bold text-slate-800 mb-2"
+                >
+                    Build Your Semester
+                </h3>
+
+                <p class="text-sm text-slate-500">
+                    Tell us what you want from your semester
+                    and Gemini will build a personalized
+                    course schedule.
+                </p>
+
+            </div>
+
+
+            <!-- Loading -->
+
+            <div
+                id="loadingState"
+                class="hidden bg-white p-12 rounded-2xl shadow-sm border border-slate-200 text-center"
+            >
+
+                <i
+                    class="fa-solid fa-circle-notch fa-spin text-4xl text-indigo-600 mb-4"
+                ></i>
+
+                <h3 class="font-bold text-lg">
+                    Building your schedule...
+                </h3>
+
+                <p class="text-sm text-slate-500 mt-2">
+                    Gemini is matching your preferences
+                    with available courses.
+                </p>
+
+            </div>
+
+
+            <!-- Results -->
+
+            <div
+                id="scheduleResults"
+                class="hidden"
+            >
+
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200"
+                >
+
+                    <div
+                        class="flex justify-between items-center mb-6"
+                    >
+
+                        <div>
+
+                            <h2
+                                class="text-2xl font-bold text-slate-900"
+                            >
+                                Your Recommended Schedule
+                            </h2>
+
+                            <p
+                                class="text-xs text-slate-500 mt-1"
+                            >
+                                Powered by Gemini AI
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="courseCardsList"
+                        class="space-y-4"
+                    ></div>
+
+                </div>
+
+
+                <!-- INIT -->
+
+                <div
+                    class="mt-6 bg-emerald-50 border border-emerald-200 p-6 rounded-2xl"
+                >
+
+                    <div class="flex items-start gap-4">
+
+                        <div
+                            class="bg-emerald-100 p-3 rounded-xl"
+                        >
+
+                            <i
+                                class="fa-solid fa-users text-emerald-600"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h4
+                                class="font-bold text-emerald-900"
+                            >
+                                Build Together
+                            </h4>
+
+                            <p
+                                class="text-sm text-emerald-700 mt-1"
+                            >
+                                Connect with other students
+                                taking the same courses,
+                                find study partners, and
+                                build together beyond the
+                                hackathon.
+                            </p>
+
+                            <button
+                                onclick="joinStudyGroup()"
+                                class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-2 px-4 rounded-lg"
+                            >
+                                Find Classmates
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ============================================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================================= -->
+
+<script>
+
+
+// -------------------------------------------------
+// DEMO STUDENT DATA
+// -------------------------------------------------
+
+const studentHistories = {
+
+    alex: [],
+
+    maya: [
+        "Intro to Python",
+        "Calculus I"
+    ],
+
+    leo: [
+        "Intro to Python",
+        "Calculus I",
+        "Data Structures"
+    ]
+
+};
+
+
+// -------------------------------------------------
+// UPDATE STUDENT PREVIEW
+// -------------------------------------------------
+
+function updateProfilePreview() {
+
+    const profile =
+        document.getElementById("studentProfile").value;
+
+    const history =
+        studentHistories[profile];
+
+    const badge =
+        document.getElementById("profileBadge");
+
+
+    if (history.length === 0) {
+
+        badge.innerHTML =
+            "<strong>Completed Courses:</strong> None";
+
+    } else {
+
+        badge.innerHTML =
+            "<strong>Completed Courses:</strong> "
+            + history.join(", ");
+
+    }
+
+}
+
+
+// -------------------------------------------------
+// GENERATE SCHEDULE
+// -------------------------------------------------
+
+async function generateSchedule() {
+
+    const profile =
+        document.getElementById("studentProfile").value;
+
+    const takenCourses =
+        studentHistories[profile];
+
+
+    const major =
+        document.getElementById("major").value;
+
+
+    const timePreference =
+        document.getElementById("time").value;
+
+
+    const difficulty =
+        document.getElementById("difficulty").value;
+
+
+    const interests =
+        document.getElementById("interests").value;
+
+
+    const initialState =
+        document.getElementById("initialState");
+
+
+    const loadingState =
+        document.getElementById("loadingState");
+
+
+    const results =
+        document.getElementById("scheduleResults");
+
+
+    const button =
+        document.getElementById("generateBtn");
+
+
+    // UI state
+
+    initialState.classList.add("hidden");
+
+    results.classList.add("hidden");
+
+    loadingState.classList.remove("hidden");
+
+    button.disabled = true;
+
+    button.innerHTML =
+        '<i class="fa-solid fa-circle-notch fa-spin"></i> Building...';
+
+
+    try {
+
+
+        const response = await fetch(
+            "/api/generate_schedule",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    major: major,
+
+                    time_preference:
+                        timePreference,
+
+                    difficulty:
+                        difficulty,
+
+                    taken_courses:
+                        takenCourses,
+
+                    interests:
+                        interests
+
+                })
+
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || data.status !== "success") {
+
+            throw new Error(
+                data.message ||
+                "Something went wrong."
+            );
+
+        }
+
+
+        renderCourses(
+            data.schedule
+        );
+
+
+        loadingState.classList.add("hidden");
+
+        results.classList.remove("hidden");
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        loadingState.classList.add("hidden");
+
+        initialState.classList.remove("hidden");
+
+        alert(
+            "Error: " + error.message
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.innerHTML =
+            '<i class="fa-solid fa-wand-magic-sparkles"></i> Generate My Schedule';
+
+    }
+
+}
+
+
+// -------------------------------------------------
+// RENDER COURSES
+// -------------------------------------------------
+
+function renderCourses(courses) {
+
+    const container =
+        document.getElementById("courseCardsList");
+
+
+    container.innerHTML = "";
+
+
+    if (!courses || courses.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
+
+                <p class="text-sm text-yellow-800">
+                    No compatible courses were found.
+                    Try changing your preferences.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    courses.forEach(course => {
+
+
+        const card = document.createElement("div");
+
+
+        card.className =
+            "p-5 rounded-xl border border-slate-200 bg-slate-50";
+
+
+        card.innerHTML = `
+
+            <div class="flex flex-col md:flex-row justify-between gap-4">
+
+                <div>
+
+                    <div class="flex items-center gap-2 mb-2">
+
+                        <span
+                            class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded"
+                        >
+                            ${escapeHTML(course["Course Code"] || "")}
+                        </span>
+
+                        <span
+                            class="text-xs text-slate-400"
+                        >
+                            Ref: ${escapeHTML(course["Ref Num"] || "")}
+                        </span>
+
+                    </div>
+
+
+                    <h3
+                        class="font-bold text-lg text-slate-900"
+                    >
+                        ${escapeHTML(course["Course Name"] || "")}
+                    </h3>
+
+
+                    <p
+                        class="text-sm text-slate-500 mt-1"
+                    >
+                        ${escapeHTML(course["Description"] || "")}
+                    </p>
+
+
+                    <div
+                        class="flex flex-wrap gap-4 mt-3 text-xs text-slate-600"
+                    >
+
+                        <span>
+                            <i class="fa-regular fa-user text-indigo-500"></i>
+                            ${escapeHTML(course["Professor"] || "TBD")}
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-calendar text-indigo-500"></i>
+                            ${escapeHTML(course["Days"] || "")}
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock text-indigo-500"></i>
+                            ${escapeHTML(course["Time"] || "")}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="md:text-right">
+
+                    <p
+                        class="text-xs font-semibold text-slate-400"
+                    >
+                        Difficulty
+                    </p>
+
+                    <p
+                        class="font-bold text-indigo-600"
+                    >
+                        ${escapeHTML(course["Difficulty"] || "N/A")}
+                    </p>
+
+
+                    <span
+                        class="inline-block mt-2 text-xs px-3 py-1 bg-white border border-slate-200 rounded-full"
+                    >
+                        ${escapeHTML(course["Workload"] || "N/A")} Workload
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+// -------------------------------------------------
+// SECURITY / HTML ESCAPE
+// -------------------------------------------------
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        String(value);
+
+    return div.innerHTML;
+
+}
+
+
+// -------------------------------------------------
+// INIT FEATURE DEMO
+// -------------------------------------------------
+
+function joinStudyGroup() {
+
+    alert(
+        "Demo: You have been matched with students taking the same course combination!"
+    );
+
+}
+
+
+// -------------------------------------------------
+// INITIALIZE
+// -------------------------------------------------
+
+updateProfilePreview();
+
+</script>
+
+
+</body>
+
+</html>
