@@ -1,22 +1,27 @@
 import csv
+import json
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from google import genai
 from dotenv import load_dotenv
 
 # Load environment variables (pulls your GEMINI_API_KEY from the .env file)
+
 load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)  # Enables cross-origin requests from frontend
 
 # Initialize the Gemini Client
 client = genai.Client()
 
 def read_courses():
-    """Reads the mock course data from our CSV file into a Python list."""
+    """Reads course dataset from local CSV."""
     courses = []
-    # Make sure 'courses.csv' is in the same folder as this file
+    if not os.path.exists('courses.csv'):
+        return courses
     with open('courses.csv', mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
@@ -25,48 +30,70 @@ def read_courses():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return jsonify({"status": "active", "message": "WhatDoITake.course backend is running!"})
 
-
-# The core route that handles the scheduling magic
 @app.route('/generate_schedule', methods=['POST'])
 def generate_schedule():
-    # 1. Get the student's preferences sent from the frontend UI
-    user_data = request.json
-    major = user_data.get('major', 'Undecided')
-    time_pref = user_data.get('time_preference', 'Any')
-    difficulty = user_data.get('difficulty', 'Any')
+    data = request.json or {}
+    
+    major = data.get('major', 'Computer Science')
+    time_pref = data.get('time_preference', 'Any')
+    difficulty_pref = data.get('difficulty', 'Balanced')
+    taken_courses = data.get('taken_courses', [])
 
-    # 2. Load your mock course data
-    available_courses = read_courses()
+    all_courses = read_courses()
 
-    # 3. Build the prompt for Gemini using the user's data and the CSV data
     prompt = f"""
-    You are an expert academic advisor for a university.
-    The student is a {major} major.
-    Time preference: {time_pref}
-    Workload/Difficulty preference: {difficulty}
+    You are an expert university academic advisor.
+    Student Major: {major}
+    Time Preference: {time_pref}
+    Workload/Difficulty Preference: {difficulty_pref}
     
-    Here is the mock list of available courses:
-    {available_courses}
+    CRITICAL CONSTRAINT:
+    The student has ALREADY TAKEN these courses: {taken_courses}.
+    DO NOT select or include any of these completed courses in the new schedule.
     
-    Based on these preferences, pick exactly 4 courses to create a balanced semester schedule. 
-    Return your answer as a clean JSON array of the 4 course objects. Do not include Markdown blocks (```json). Just return the raw JSON text.
+    Available Course Pool:
+    {json.dumps(all_courses)}
+    
+    TASK:
+    Select exactly 4 unique courses from the available pool that best fit the student's preferences and major.
+    Make sure class times DO NOT overlap.
+    
+    RESPONSE FORMAT REQUIREMENT:
+    Return ONLY a valid JSON array containing exactly 4 course objects directly from the input pool.
+    Do NOT include Markdown formatting, backticks, or extra text.
     """
 
-    # 4. Call the Gemini API
     try:
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=prompt
         )
+
+        raw_text = response.text.strip()
         
-        # 5. Send the AI's generated schedule back to the frontend
-        return jsonify({"status": "success", "schedule": response.text})
+        # Strip potential markdown code blocks if present
+        if raw_text.startswith("```json"):
+            raw_text = raw_text[7:]
+        if raw_text.startswith("```"):
+            raw_text = raw_text[3:]
+        if raw_text.endswith("```"):
+            raw_text = raw_text[:-3]
+            
+        schedule = json.loads(raw_text.strip())
+
+        return jsonify({
+            "status": "success",
+            "schedule": schedule
+        })
+
     except Exception as e:
-        # If something breaks, tell the frontend what happened
-        return jsonify({"status": "error", "message": str(e)}), 500
+        print("Backend Error:", str(e))
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
 
 if __name__ == '__main__':
-    # Starts the local development server
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5000)
